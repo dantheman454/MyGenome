@@ -17,3 +17,8 @@ fastqc Pr88167_1.fq.gz Pr88167_2.fq.gz
 ``` bash
 ~/.aspera/connect/bin/ascp -i ~/sequences/aspera.openssh -QT -l100m -k1 -d ~/MyGenome/ subasp@upload.ncbi.nlm.nih.gov:uploads/dannyh2004_uky.edu_NJVKm74d
 ```
+
+#Trim the sequence reads
+-count sequence reads in forward and reverse
+-insert value into metadata sheet
+-assess sequence quality using fastqc

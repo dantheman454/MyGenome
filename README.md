@@ -19,7 +19,9 @@ fastqc Pr88167_1.fq.gz Pr88167_2.fq.gz
 ```
 
 #Trim the sequence reads
+
 -count sequence reads in forward and reverse
+
 ``` bash
 zcat Pr88167_1.fq.gz | wc -l | awk '{print $1/4}'
 ```

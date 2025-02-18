@@ -20,5 +20,21 @@ fastqc Pr88167_1.fq.gz Pr88167_2.fq.gz
 
 #Trim the sequence reads
 -count sequence reads in forward and reverse
--insert value into metadata sheet
+``` bash
+zcat Pr88167_1.fq.gz | wc -l | awk '{print $1/4}'
+```
+Output = 8293893
+
+``` bash
+zcat Pr88167_2.fq.gz | wc -l | awk '{print $1/4}'
+```
+Output = 8293893
+
+-insert value into metadata sheet under '# raw reads (single end)' column
+
+-Trim files (CHECK THIS COMMAND AGAINST MANUAL) (ALSO NEED TO FIND/GET PROPER ADAPTERS FILE FROM FARMAN LAB MAC)(Header 5 in Module 5)
+``` bash
+java -jar trimmomatic-0.38.jar PE -threads 2 -phred33 -trimlog Pr88167_errorlog.txt Pr88167_1.fq.gz Pr88167_2.fq.gz Pr88167_1_paired.fastq Pr88167_1_unpaired.fastq Pr88167_2_paired.fastq Pr88167_2_unpaired.fastq CROP:280 SLIDINGWINDOW:20:20 MINLEN:150
+```
+
 -assess sequence quality using fastqc

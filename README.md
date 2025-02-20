@@ -48,6 +48,10 @@ Output = 8293893
 java -jar ../sequences/trimmomatic-0.38.jar PE -threads 2 -phred33 -trimlog Pr88167.txt Pr88167_1.fq.gz Pr88167_2.fq.gz Pr88167_1_paired.fastq Pr88167_1_unpaired.fastq Pr88167_2_paired.fastq Pr88167_2_unpaired.fastq ILLUMINACLIP:~/sequences/adaptors.fa:2:30:10 SLIDINGWINDOW:20:20 MINLEN:120
 ```
 
+-Run fastqc to get quality graphs
+``` bash
+fastqc Pr88167_1_paired.fastq Pr88167_2_paired.fastq
+```
  
 #Post-Trimmomatic Pr88167 forward
 <img width="1151" alt="Screenshot 2025-02-20 at 2 48 33 PM" src="https://github.com/user-attachments/assets/35dcfa03-0b8e-46ea-8af7-75ed44fb970a" />
@@ -63,6 +67,14 @@ java -jar ../sequences/trimmomatic-0.38.jar PE -threads 2 -phred33 -trimlog Pr88
 #Create working directory on the MCC supercomputer 
 
 -login using ssh linkBlueID@mcc.uky.edu
+
 -change into /project/farman_s25abt480
--create a new directory named after linkBlueID (Done up to this point)
--use scp to copy trimmed .fastq files into newly created directory (TODO)
+
+-create a new directory named after linkBlueID 
+
+-use scp to copy trimmed .fastq files from VM into newly created directory in supercomputer 
+``` bash
+scp ./Pr88167_?_paired.fastq  dha308@mcc.uky.edu:/project/farman_s25abt480/dha308
+```
+
+

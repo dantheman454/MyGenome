@@ -2,11 +2,8 @@
 Repository to store work done throughout the Spring 2025 semester for ABT480 (Applied Bioinformatics)
 
 
-
-
 #Create BioSample Entry in NCBI BioProject (PRJNA926786)
-(INSERT SCREENSHOT HERE)
-forward and reve
+<img width="1149" alt="Screenshot 2025-02-18 at 2 51 24 PM" src="https://github.com/user-attachments/assets/749adfa0-107e-4c18-819a-b1961b06d380" />
 
 
 
@@ -15,8 +12,11 @@ forward and reve
 fastqc Pr88167_1.fq.gz Pr88167_2.fq.gz
 ```
 
+
 #Pre-Trimmomatic Pr88167 forward
 <img width="1156" alt="PreTrim_Pr88167_1" src="https://github.com/user-attachments/assets/4e5ef325-9646-494a-95ea-4199bcb6c1f2" />
+
+
 
 #Pre-Trimmomatic Pr88167 backward
 <img width="1158" alt="PreTrim_Pr88167_2" src="https://github.com/user-attachments/assets/1482b3b6-4b20-43ff-b4f3-9c594b9bff71" />

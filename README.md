@@ -15,9 +15,10 @@ forward and reve
 fastqc Pr88167_1.fq.gz Pr88167_2.fq.gz
 ```
 
+#Pre-Trimmomatic Pr88167 forward
 <img width="1156" alt="PreTrim_Pr88167_1" src="https://github.com/user-attachments/assets/4e5ef325-9646-494a-95ea-4199bcb6c1f2" />
 
-
+#Pre-Trimmomatic Pr88167 backward
 <img width="1158" alt="PreTrim_Pr88167_2" src="https://github.com/user-attachments/assets/1482b3b6-4b20-43ff-b4f3-9c594b9bff71" />
 
 
@@ -28,7 +29,6 @@ fastqc Pr88167_1.fq.gz Pr88167_2.fq.gz
 ```
 
 #Trim the sequence reads
-
 -count sequence reads in forward and reverse
 
 ``` bash
@@ -43,7 +43,7 @@ Output = 8293893
 
 -insert value into metadata sheet under '# raw reads (single end)' column
 
--Trim files (TODO)(CHECK THIS COMMAND AGAINST MANUAL) (ALSO NEED TO FIND/GET PROPER ADAPTERS FILE FROM FARMAN LAB MAC)(Header 5 in Module 5)
+-Trim files for adapter contamination 
 ``` bash
 java -jar ../sequences/trimmomatic-0.38.jar PE -threads 2 -phred33 -trimlog Pr88167.txt Pr88167_1.fq.gz Pr88167_2.fq.gz Pr88167_1_paired.fastq Pr88167_1_unpaired.fastq Pr88167_2_paired.fastq Pr88167_2_unpaired.fastq ILLUMINACLIP:~/sequences/adaptors.fa:2:30:10 SLIDINGWINDOW:20:20 MINLEN:120
 ```

@@ -138,3 +138,21 @@ To move your processed data onto the MCC supercomputer:
    ```
    
 ─────────────────────────────  
+RUN GENOME ASSEMBLY ON SUPER COMPUTER
+
+-use velvetoptimers to find optimal kmer value
+
+``` bash
+sbatch velvetoptimiser_noclean.sh Pr88167 61 131 10
+```
+optimized kmer value = 91
+
+``` bash
+sbatch velvetoptimiser_noclean.sh Pr88167 81 101 2
+```
+optimized kmer value = 
+
+
+
+
+

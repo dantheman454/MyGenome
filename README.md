@@ -58,12 +58,12 @@ zcat Pr88167_1.fq.gz | wc -l | awk '{print $1/4}'
 ```
 Output: 8,293,893
 
+
 ```bash
 zcat Pr88167_2.fq.gz | wc -l | awk '{print $1/4}'
 ```
 Output: 8,293,893
 
-Insert the values into the metadata sheet under the “# raw reads (single end)” column.
 
 Remove adapter contamination by running:
 
@@ -119,7 +119,7 @@ SRR # = SRR32568306
 
 ### Transferring Data to the MCC Supercomputer
 
-To move your processed data onto the MCC supercomputer:
+To move data onto the MCC supercomputer:
 
 1. Login to the MCC Supercomputer:
    ```bash
@@ -129,11 +129,11 @@ To move your processed data onto the MCC supercomputer:
    ```bash
    cd /project/farman_s25abt480
    ```
-3. Create a new directory named after your linkBlueID:
+3. Create a new directory named after linkBlueID:
    ```bash
    mkdir linkBlueID
    ```
-4. Use SCP to transfer the trimmed .fastq files from your VM to the new directory:
+4. Use SCP to transfer the trimmed .fastq files from VM to the new directory:
    ```bash
    scp ./Pr88167_?_paired.fastq dha308@mcc.uky.edu:/project/farman_s25abt480/dha308
    ```

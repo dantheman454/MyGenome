@@ -115,6 +115,7 @@ The raw sequence data is uploaded to NCBI using Aspera with the following comman
 ```bash
 ~/.aspera/connect/bin/ascp -i ~/sequences/aspera.openssh -QT -l100m -k1 -d ~/MyGenome/ subasp@upload.ncbi.nlm.nih.gov:uploads/dannyh2004_uky.edu_NJVKm74d
 ```
+SRR # = SRR32568306
 
 ### Transferring Data to the MCC Supercomputer
 
@@ -150,7 +151,13 @@ optimized kmer value = 91
 ``` bash
 sbatch velvetoptimiser_noclean.sh Pr88167 81 101 2
 ```
-optimized kmer value = 
+optimized kmer value = 97
+
+Genome assmebly using optimized kmer value
+
+```bash
+
+```
 
 
 

@@ -153,13 +153,3 @@ sbatch velvetoptimiser_noclean.sh Pr88167 81 101 2
 ```
 optimized kmer value = 97
 
-Genome assmebly using optimized kmer value
-
-```bash
-
-```
-
-
-
-
-

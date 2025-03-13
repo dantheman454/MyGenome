@@ -139,7 +139,7 @@ To move data onto the MCC supercomputer:
    ```
    
 ─────────────────────────────  
-RUN GENOME ASSEMBLY ON SUPER COMPUTER
+### Run Genome Assembly on Super Computer
 
 -use velvetoptimers to find optimal kmer value
 

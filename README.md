@@ -167,3 +167,11 @@ sbatch velvetoptimiser_noclean.sh Pr88167 81 101 2
 ```
 optimized kmer value = 97
 
+#### Check Gene Completeness using BUSCO
+
+''' bash
+sbatch /project/farman_s25abt480/dha308/scripts/BuscoSingularity.sh /project/farman_s25abt480/dha308/Pr88167/Pr88167_final.fasta
+'''
+
+
+

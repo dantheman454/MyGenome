@@ -95,6 +95,20 @@ fastqc Pr88167_1_paired.fastq Pr88167_2_paired.fastq
 
 ### Post-Trimming Quality Check
 
+#### Count the Total # of bases in paired end reads (forward + reverse reads)
+
+''' bash
+awk 'NR % 4 == 0' ORS="" Pr88167_1_paired.fastq |wc -m
+'''
+Output = 1008347290
+
+''' bash
+awk 'NR % 4 == 0' ORS="" Pr88167_2_paired.fastq |wc -m
+'''
+Output = 1021720317
+
+Total # of bases = 1008347290 + 1021720317 = 2030067607
+
 Examine the quality of the trimmed sequence files:
 
 #### Post-Trimming: Forward Reads

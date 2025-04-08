@@ -167,11 +167,49 @@ sbatch velvetoptimiser_noclean.sh Pr88167 81 101 2
 ```
 optimized kmer value = 97
 
+
+───────────────────────────── 
 #### Check Gene Completeness using BUSCO
 
-''' bash
+``` bash
 sbatch /project/farman_s25abt480/dha308/scripts/BuscoSingularity.sh /project/farman_s25abt480/dha308/Pr88167/Pr88167_final.fasta
-'''
+```
+
+### Process MyGenome files
+
+-Cull short contigs
+``` bash
+perl ./scripts/CullShortContigs.pl ./Pr88167/Pr88167_nh.fasta
+```
+
+-Check that it worked correctly 
+``` bash
+perl ./scripts/SeqLen.pl ./Pr88167/Pr88167_final.fasta
+```
+
+───────────────────────────── 
+### BLAST final genome
+
+-BLAST the _MoMitochondrion.fasta_ sequence against the final genome assembly using output format 6
+
+``` bash
+blastn -query /project/farman_s25abt480/dha308/MoMitochondrion.fasta -subject /project/farman_s25abt480/dha308/Pr88167/Pr88167_nh.fasta -evalue 1e-50 -max_target_seqs 20000 -outfmt '6 qseqid sseqid qstart qend sstart send btop' -out MoMitochondrion.Pr88167.BLAST
+```
+
+-Export a list of contigs that comprise mitochondrial sequences
+``` bash
+awk '$4/$3 > 0.9 {print $2 ",mitochondrion"}' MoMitochondrion.Pr88167.BLAST > Pr88167_mitochondrion.csv
+```
+
+-BLAST genome assembly against a repeat-masked version of the B71 reference genome
+``` bash
+blastn -query /project/farman_s25abt480/dha308/B71v2sh_masked.fasta -subject /project/farman_s25abt480/dha308/Pr88167/Pr88167_nh.fasta -evalue 1e-50 -max_target_seqs 20000 -outfmt '6 qseqid sseqid qstart qend sstart send btop' -out B71v2sh.Pr88167.BLAST
+```
+
+-created a directory for both BLAST outputs
+-copied over B71v2sh.Pr88167.BLAST to the class directory
+
+
 
 
 

@@ -193,13 +193,44 @@ perl ./scripts/SeqLen.pl ./Pr88167/Pr88167_final.fasta
 -BLAST the _MoMitochondrion.fasta_ sequence against the final genome assembly using output format 6
 
 ``` bash
-blastn -query /project/farman_s25abt480/dha308/MoMitochondrion.fasta -subject /project/farman_s25abt480/dha308/Pr88167/Pr88167_nh.fasta -evalue 1e-50 -max_target_seqs 20000 -outfmt '6 qseqid sseqid qstart qend sstart send btop' -out MoMitochondrion.Pr88167.BLAST
+blastn -query /project/farman_s25abt480/dha308/MoMitochondrion.fasta -subject /project/farman_s25abt480/dha308/Pr88167/Pr88167_nh.fasta -evalue 1e-50 -max_target_seqs 20000 -outfmt '6 qseqid sseqid slen length qstart qend sstart send btop' -out MoMitochondrion.Pr88167.BLAST
 ```
 
 -Export a list of contigs that comprise mitochondrial sequences
 ``` bash
 awk '$4/$3 > 0.9 {print $2 ",mitochondrion"}' MoMitochondrion.Pr88167.BLAST > Pr88167_mitochondrion.csv
 ```
+
+-Count the total length of contigs that align with the mitochondrial genome
+
+``` bash
+#!/bin/bash
+
+# File containing BLAST results
+input_file="MoMitochondrion.Pr88167.BLAST"
+
+# Check if file exists
+if [ ! -f "$input_file" ]; then
+    echo "Error: File $input_file not found."
+    exit 1
+fi
+
+# Extract unique contig names and their lengths, then sum them
+total_contig_length=$(awk '{print $2, $3}' "$input_file" | sort -u | awk '{sum += $2} END {print sum}')
+
+# Check if the calculation was successful
+if [ -z "$total_contig_length" ]; then
+    echo "Error: Failed to calculate total contig length."
+    exit 1
+fi
+
+echo "Total length of contigs aligning with mitochondrial genome: $total_contig_length"
+```
+
+
+Output: Total length of contigs aligning with mitochondrial genome: 34804
+
+
 
 -BLAST genome assembly against a repeat-masked version of the B71 reference genome
 ``` bash
@@ -208,8 +239,5 @@ blastn -query /project/farman_s25abt480/dha308/B71v2sh_masked.fasta -subject /pr
 
 -created a directory for both BLAST outputs
 -copied over B71v2sh.Pr88167.BLAST to the class directory
-
-
-
 
 

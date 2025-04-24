@@ -241,3 +241,41 @@ blastn -query /project/farman_s25abt480/dha308/B71v2sh_masked.fasta -subject /pr
 -copied over B71v2sh.Pr88167.BLAST to the class directory
 
 
+
+
+
+## Use MAKER on final genome
+
+-create the MAKER config files
+``` bash
+maker -CTL
+```
+
+-Update the _makers_opts.ctl_ to match my files exactly 
+
+-Run MAKER
+
+``` bash
+maker 2>&1 | tee maker.log
+```
+
+-Merge everytihng into one GFF file
+
+```bash
+gff3_merge -d Pr88167.maker.output/Pr88167_master_datastore_index.log -o Pr88167-annotations.gff
+```
+
+-Export sequences of predicted proteins
+``` bash
+fasta_merge -d Pr88167_final.maker.output/Pr88167_final_master_datastore_index.log -o Pr88167-genes.fasta
+```
+
+
+-Count # of predicted proteins
+``` bash
+grep -c "^>" Pr88167-genes.fasta.all.maker.proteins.fasta
+```
+Output = 13171
+
+-Transfer GFF and Proteins file into class
+

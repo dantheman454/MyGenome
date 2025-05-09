@@ -1,9 +1,7 @@
-─────────────────────────────  
 # MyGenome
 
-Repository to store work completed during the Spring 2025 semester for ABT480 (Applied Bioinformatics).
+Repository to store work completed during the Spring 2025 semester for ABT480 
 
-─────────────────────────────  
 ## Table of Contents
 
 - [BioSample Entry on NCBI BioProject](#biosample-entry-on-ncbi-bioproject-prjna926786)
@@ -15,15 +13,17 @@ Repository to store work completed during the Spring 2025 semester for ABT480 (A
 - [Data Transfer](#data-transfer)
   - [Uploading Raw Data to NCBI](#uploading-raw-data-to-ncbi)
   - [Transferring Data to the MCC Supercomputer](#transferring-data-to-the-mcc-supercomputer)
+- [Genome Assembly](#genome-assembly)
+- [Genome Quality Assessment](#genome-quality-assessment)
+- [Genome Analysis](#genome-analysis)
+- [Genome Annotation](#genome-annotation)
 
-─────────────────────────────  
 ## BioSample Entry on NCBI BioProject (PRJNA926786)
 
 This section documents the creation of a BioSample entry in the NCBI BioProject.
 
 <img width="1149" alt="BioSample Entry Screenshot" src="https://github.com/user-attachments/assets/749adfa0-107e-4c18-819a-b1961b06d380" />
 
-─────────────────────────────  
 ## Quality Check of Raw Sequences
 
 Initial quality of the raw sequence files is verified using FastQC:
@@ -32,7 +32,6 @@ Initial quality of the raw sequence files is verified using FastQC:
 fastqc Pr88167_1.fq.gz Pr88167_2.fq.gz
 ```
 
-─────────────────────────────  
 ## Data Processing
 
 This section outlines the steps involved in processing the sequencing data.
@@ -58,12 +57,10 @@ zcat Pr88167_1.fq.gz | wc -l | awk '{print $1/4}'
 ```
 Output: 8,293,893
 
-
 ```bash
 zcat Pr88167_2.fq.gz | wc -l | awk '{print $1/4}'
 ```
 Output: 8,293,893
-
 
 Remove adapter contamination by running:
 
@@ -97,14 +94,14 @@ fastqc Pr88167_1_paired.fastq Pr88167_2_paired.fastq
 
 #### Count the Total # of bases in paired end reads (forward + reverse reads)
 
-''' bash
-awk 'NR % 4 == 0' ORS="" Pr88167_1_paired.fastq |wc -m
-'''
+```bash
+awk 'NR % 4 == 0' ORS="" Pr88167_1_paired.fastq | wc -m
+```
 Output = 1008347290
 
-''' bash
-awk 'NR % 4 == 0' ORS="" Pr88167_2_paired.fastq |wc -m
-'''
+```bash
+awk 'NR % 4 == 0' ORS="" Pr88167_2_paired.fastq | wc -m
+```
 Output = 1021720317
 
 Total # of bases = 1008347290 + 1021720317 = 2030067607
@@ -119,7 +116,6 @@ Examine the quality of the trimmed sequence files:
 
 <img width="1150" alt="PostTrim Pr88167 Backward" src="https://github.com/user-attachments/assets/8790521b-62ab-40cb-8f4a-0082290689d3" />
 
-─────────────────────────────  
 ## Data Transfer
 
 ### Uploading Raw Data to NCBI
@@ -151,59 +147,59 @@ To move data onto the MCC supercomputer:
    ```bash
    scp ./Pr88167_?_paired.fastq dha308@mcc.uky.edu:/project/farman_s25abt480/dha308
    ```
-   
-─────────────────────────────  
-### Run Genome Assembly on Super Computer
 
--use velvetoptimers to find optimal kmer value
+## Genome Assembly
 
-``` bash
+### Finding Optimal K-mer Value
+
+Use velvetoptimers to find optimal kmer value:
+
+```bash
 sbatch velvetoptimiser_noclean.sh Pr88167 61 131 10
 ```
-optimized kmer value = 91
+Optimized kmer value = 91
 
-``` bash
+```bash
 sbatch velvetoptimiser_noclean.sh Pr88167 81 101 2
 ```
-optimized kmer value = 97
+Optimized kmer value = 97
 
+## Genome Quality Assessment
 
-───────────────────────────── 
-#### Check Gene Completeness using BUSCO
+### Check Gene Completeness using BUSCO
 
-``` bash
+```bash
 sbatch /project/farman_s25abt480/dha308/scripts/BuscoSingularity.sh /project/farman_s25abt480/dha308/Pr88167/Pr88167_final.fasta
 ```
 
-### Process MyGenome files
+### Process MyGenome Files
 
--Cull short contigs
-``` bash
+Cull short contigs:
+```bash
 perl ./scripts/CullShortContigs.pl ./Pr88167/Pr88167_nh.fasta
 ```
 
--Check that it worked correctly 
-``` bash
+Check that it worked correctly:
+```bash
 perl ./scripts/SeqLen.pl ./Pr88167/Pr88167_final.fasta
 ```
 
-───────────────────────────── 
-### BLAST final genome
+## Genome Analysis
 
--BLAST the _MoMitochondrion.fasta_ sequence against the final genome assembly using output format 6
+### BLAST Analysis of Final Genome
 
-``` bash
+BLAST the mitochondrial genome sequence against the final genome assembly:
+```bash
 blastn -query /project/farman_s25abt480/dha308/MoMitochondrion.fasta -subject /project/farman_s25abt480/dha308/Pr88167/Pr88167_nh.fasta -evalue 1e-50 -max_target_seqs 20000 -outfmt '6 qseqid sseqid slen length qstart qend sstart send btop' -out MoMitochondrion.Pr88167.BLAST
 ```
 
--Export a list of contigs that comprise mitochondrial sequences
-``` bash
+Export a list of contigs that comprise mitochondrial sequences:
+```bash
 awk '$4/$3 > 0.9 {print $2 ",mitochondrion"}' MoMitochondrion.Pr88167.BLAST > Pr88167_mitochondrion.csv
 ```
 
--Count the total length of contigs that align with the mitochondrial genome
-
-``` bash
+Count the total length of contigs that align with the mitochondrial genome:
+```bash
 #!/bin/bash
 
 # File containing BLAST results
@@ -226,56 +222,46 @@ fi
 
 echo "Total length of contigs aligning with mitochondrial genome: $total_contig_length"
 ```
-
-
 Output: Total length of contigs aligning with mitochondrial genome: 34804
 
-
-
--BLAST genome assembly against a repeat-masked version of the B71 reference genome
-``` bash
+BLAST genome assembly against a repeat-masked version of the B71 reference genome:
+```bash
 blastn -query /project/farman_s25abt480/dha308/B71v2sh_masked.fasta -subject /project/farman_s25abt480/dha308/Pr88167/Pr88167_nh.fasta -evalue 1e-50 -max_target_seqs 20000 -outfmt '6 qseqid sseqid qstart qend sstart send btop' -out B71v2sh.Pr88167.BLAST
 ```
 
--created a directory for both BLAST outputs
--copied over B71v2sh.Pr88167.BLAST to the class directory
+Created a directory for both BLAST outputs and copied over B71v2sh.Pr88167.BLAST to the class directory.
 
+## Genome Annotation
 
+### Using MAKER for Genome Annotation
 
-
-
-## Use MAKER on final genome
-
--create the MAKER config files
-``` bash
+Create the MAKER config files:
+```bash
 maker -CTL
 ```
 
--Update the _makers_opts.ctl_ to match my files exactly 
+Update the _makers_opts.ctl_ to match my files exactly.
 
--Run MAKER
-
-``` bash
+Run MAKER:
+```bash
 maker 2>&1 | tee maker.log
 ```
 
--Merge everytihng into one GFF file
-
+Merge everything into one GFF file:
 ```bash
 gff3_merge -d Pr88167.maker.output/Pr88167_master_datastore_index.log -o Pr88167-annotations.gff
 ```
 
--Export sequences of predicted proteins
-``` bash
+Export sequences of predicted proteins:
+```bash
 fasta_merge -d Pr88167_final.maker.output/Pr88167_final_master_datastore_index.log -o Pr88167-genes.fasta
 ```
 
-
--Count # of predicted proteins
-``` bash
+Count number of predicted proteins:
+```bash
 grep -c "^>" Pr88167-genes.fasta.all.maker.proteins.fasta
 ```
 Output = 13171
 
--Transfer GFF and Proteins file into class
+Transfer GFF and Proteins file into class directory.
 
